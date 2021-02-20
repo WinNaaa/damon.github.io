@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>runtime快速入门和实战 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="什么是runtime?简单来说,runtime就是一个C语言库,包含了很多底层C语言的API。Objective-C语言是一门动态语言,我们平时变编写的Objective-C代码，在程序运行时,最终都是转成了runtime的C语言代码。所以,只有在程序运行时,才会去确定对象的类型，并调用类与对象相应的方法。 利用runtime能做什么?利用runtime机制让我们可以在程序运行时动态修改类对象、对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="runtime快速入门和实战">
+<meta property="og:url" content="http://example.com/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是runtime?简单来说,runtime就是一个C语言库,包含了很多底层C语言的API。Objective-C语言是一门动态语言,我们平时变编写的Objective-C代码，在程序运行时,最终都是转成了runtime的C语言代码。所以,只有在程序运行时,才会去确定对象的类型，并调用类与对象相应的方法。 利用runtime能做什么?利用runtime机制让我们可以在程序运行时动态修改类对象、对">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/runtime_1.png">
+<meta property="og:image" content="http://example.com/images/runtime_3.jpeg">
+<meta property="og:image" content="http://example.com/images/runtime_2.jpeg">
+<meta property="article:published_time" content="2016-06-12T12:24:36.000Z">
+<meta property="article:modified_time" content="2020-09-15T01:19:56.719Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/runtime_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-runtime快速入门和实战" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/" class="article-date">
+  <time class="dt-published" datetime="2016-06-12T12:24:36.000Z" itemprop="datePublished">2016-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      runtime快速入门和实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是runtime"><a href="#什么是runtime" class="headerlink" title="什么是runtime?"></a>什么是runtime?</h3><p>简单来说,<code>runtime</code>就是一个C语言库,包含了很多底层<code>C</code>语言的API。<code>Objective-C</code>语言是一门动态语言,我们平时变编写的<code>Objective-C</code>代码，在程序运行时,最终都是转成了<code>runtime</code>的<code>C</code>语言代码。所以,只有在程序运行时,才会去确定对象的类型，并调用类与对象相应的方法。</p>
+<h3 id="利用runtime能做什么"><a href="#利用runtime能做什么" class="headerlink" title="利用runtime能做什么?"></a>利用runtime能做什么?</h3><p>利用<code>runtime</code>机制让我们可以在程序运行时动态修改类对象、对象中的所有属性、方法，就算是私有方法以及私有属性都是可以动态修改的。<code>KVO</code>的底层实现就是利用<code>runtime</code>来实现的</p>
+<h3 id="类和对象基本数据结构"><a href="#类和对象基本数据结构" class="headerlink" title="类和对象基本数据结构"></a>类和对象基本数据结构</h3><p>首先,我们来认识一下<code>classes</code>和<code>objects</code>的概念。我们都知道，<code>Objects</code>是由<code>Classes</code>生成,但是在<code>Objective-C</code>中,<code>Classes</code>本身也是<code>objects</code>,也能处理消息,这也就是为什么有类方法和实例方法。</p>
+<h4 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h4><p>打开objc.h可以看到Class的定义</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_class *Class;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><figcaption><span>实际上就是一个指向```objc_class```结构体的指针,打开objc/runtime.h中查看```objc_class```的定义</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#96;&#96;&#96;objc</span><br><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line">#if !__OBJC2__</span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;  </span><br><span class="line">    const char *name                                         OBJC2_UNAVAILABLE;  </span><br><span class="line">    long version                                             OBJC2_UNAVAILABLE;  </span><br><span class="line">    long info                                                OBJC2_UNAVAILABLE;  </span><br><span class="line">    long instance_size                                       OBJC2_UNAVAILABLE;  </span><br><span class="line">    struct objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;  </span><br><span class="line">    struct objc_method_list **methodLists                    OBJC2_UNAVAILABLE;  </span><br><span class="line">    struct objc_cache *cache                                 OBJC2_UNAVAILABLE;  </span><br><span class="line">    struct objc_protocol_list *protocols                     OBJC2_UNAVAILABLE; </span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br><span class="line">&#x2F;* Use &#96;Class&#96; instead of &#96;struct objc_class *&#96; *&#x2F;</span><br></pre></td></tr></table></figure>
+<p>但是，上面的代码有 <code>OBJC2_UNAVAILABLE</code> 标志，这是说明这个结构体在 OC 2.0 版本（2006年发布）已经是不可用的。<br>现在已经变成这个样子：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_class *Class;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_object *<span class="keyword">id</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> objc_object &#123;</span><br><span class="line">private:</span><br><span class="line">    isa_t isa;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> objc_class : objc_object &#123;</span><br><span class="line">    <span class="comment">// Class ISA;</span></span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;             <span class="comment">// 方法缓存</span></span><br><span class="line">    class_data_bits_t bits;    <span class="comment">// 用来获取类的具体信息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>objc_object</code> 和 <code>objc_class</code> 就是我们经常会用到的 <code>id</code> 和 <code>Class</code> 类型。</p>
+<p><code>objc_object</code> 只包含一个 <code>isa_t</code> 类型的结构体，<code>objc_class</code> 继承于 <code>objc_object</code>，可以得出结论，对象都是有 <code>isa</code> 的，OC中类也是一个对象，那 <code>isa</code> 有什么作用？</p>
+<p>当一个对象的实例方法被调用的时候，就会通过 <code>isa</code> 找到对应的类，然后通过该类的 <code>class_data_bits_t</code> 找到对应的实现。如果调用类方法的话，类对象的 <code>isa</code> 就是元类（meta-class）。对象，类，元类之间的关系：</p>
+<p><img src="/images/runtime_1.png"></p>
+<p>实线是 <code>super_class</code> 指针，虚线是 <code>isa</code> 指针。</p>
+<ul>
+<li>Root class 其实就是 NSObject，它是没有超类的，superclasss 指向 nil。</li>
+<li>NSObject 的元类的 superclass 指向自己。</li>
+<li>每个元类对象的 isa 都指向 根元类对象。</li>
+</ul>
+<h3 id="cache-t"><a href="#cache-t" class="headerlink" title="cache_t"></a>cache_t</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> uint32_t;</span><br><span class="line"><span class="keyword">typedef</span> uint32_t mask_t;  <span class="comment">// x86_64 &amp; arm64 asm are less efficient with 16-bits</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span>  uintptr_t;</span><br><span class="line"><span class="keyword">typedef</span> uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> cache_t &#123;</span><br><span class="line">    <span class="keyword">struct</span> bucket_t *_buckets;  <span class="comment">// 散列表</span></span><br><span class="line">    mask_t _mask; <span class="comment">// 散列表的长度 -1</span></span><br><span class="line">    mask_t _occupied; <span class="comment">// 已经缓存的方法数量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> bucket_t &#123;</span><br><span class="line">private:</span><br><span class="line">    cache_key_t _key;  <span class="comment">// SEL 作为key</span></span><br><span class="line">    IMP _imp;   <span class="comment">// 指向函数的指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>cache_t 里面用散列表来缓存曾经调用过的方法，可以提高方法的查找速度。</p>
+<h3 id="class-data-bits-t"><a href="#class-data-bits-t" class="headerlink" title="class_data_bits_t"></a>class_data_bits_t</h3><p>使用 <code>bits</code> &amp; <code>FAST_DATA_MASK</code> 可以得到 <code>class_rw_t</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    <span class="keyword">const</span> class_ro_t *ro;         <span class="comment">// 只读</span></span><br><span class="line">    method_array_t methods;       <span class="comment">// 方法列表（分类和类的都在这里）</span></span><br><span class="line">    property_array_t properties;  <span class="comment">// 属性列表</span></span><br><span class="line">    protocol_array_t protocols;   <span class="comment">// 协议列表</span></span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    <span class="keyword">char</span> *demangledName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __LP64__</span></span><br><span class="line">    uint32_t reserved;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">const</span> uint8_t * ivarLayout;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> * name;  <span class="comment">// 类名</span></span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    <span class="keyword">const</span> ivar_list_t * ivars;   <span class="comment">// 成员变量列表</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line"></span><br><span class="line">    method_list_t *baseMethods() <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> baseMethodList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>class_rw_t</code> 里面的 methos、properties、protocols是可读可写的二维数组，包含了类的初始内容、分类的内容。</li>
+<li><code>class_ro_t</code> 里面的 <code>baseMethodList</code>，<code>baseProtocols</code> ，<code>ivars</code>，<code>baseProperties</code> 是只读的一维数组，包含了类的初始内容。</li>
+</ul>
+<h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><p>method_t 是对方法的封装。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> method_t &#123;</span><br><span class="line">    SEL name;  <span class="comment">// 函数名</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *types; <span class="comment">// 函数编码（返回值类型、参数类型）</span></span><br><span class="line">    IMP imp; <span class="comment">// 指向函数的指针 (函数地址)</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>runtime</code> 的源码是开源，可以在<a target="_blank" rel="noopener" href="https://opensource.apple.com/source/objc4/">官方</a>下载，但是官方的是编译不过的，可以到<a href="(https://github.com/RetVal/objc-runtime)">这里</a>下载可以编译的版本</p>
+<h2 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h2><p>平常我们使用OC代码来调用方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个People实例</span></span><br><span class="line">People *p = [[People alloc] init];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用方法</span></span><br><span class="line">[p doSomething];</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对象调用方法,本质上就是给对象”发送消息”,所以以上的代码,在编译时就会转换成<code>runtime</code>的<code>objc_msgSend</code>函数调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(p, <span class="keyword">@selector</span>(doSomething));</span><br></pre></td></tr></table></figure>
+<p>objc_msgSend函数会根据接收者和SEL选择器的类型来调用适当的方法,为了完成这个操作,它首先会在自身的isa指针找到自己所属的类(class),然后在这个类(class)的”方法列表”(list of methods)查找该方法,如果找到,就会去执行这个方法。如果找不到,会继续通过自身的super_class指针找到父类的类对象继续查找。如果到最后还是找不到相对应的方法,就会执行”消息转发”操作(将在下文详细介绍)</p>
+<p>objc_msgSend函数只能处理部分消息的调用过程,如果有其他“特殊”的情况就会调用另外一些函数来处理,具体会调用哪些函数呢?</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend_stret: 发送的消息要返回结构体,就可以用这个函数来发送和接收返回值</span><br><span class="line">objc_msgSend_fpret : 发送的消息要返回浮点数,就可以用这个函数来发送和接收返回值</span><br><span class="line">objc_msgSendSuper : 如果要给超类发送信息,例如[<span class="keyword">super</span> doSomething]就可以用这个函数来处理<span class="operator">。</span></span><br></pre></td></tr></table></figure>
+<h2 id="Runtime实战"><a href="#Runtime实战" class="headerlink" title="Runtime实战"></a>Runtime实战</h2><p>终于写到这里了,上文说过runtime可以在程序运行时动态添加类、对象、属性、方法等。那我们可以…生成一个”女朋友”？那下面我们来具体实现一下吧</p>
+<h4 id="女朋友养成计划"><a href="#女朋友养成计划" class="headerlink" title="女朋友养成计划"></a>女朋友养成计划</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;AppDelegate.h&quot;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数的两个默认参数:self和_cmd</span></span><br><span class="line"><span class="keyword">void</span> cooking(<span class="keyword">id</span> <span class="keyword">self</span>,SEL _cmd,<span class="keyword">id</span> dish)&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过runtime函数获取成员变量 _name</span></span><br><span class="line">    Ivar nameIvar = class_getInstanceVariable([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    <span class="keyword">id</span> name = object_getIvar(<span class="keyword">self</span>, nameIvar);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过KVC获取成员变量 _age</span></span><br><span class="line">    <span class="built_in">NSInteger</span> age = [[<span class="keyword">self</span> valueForKeyPath:<span class="string">@&quot;age&quot;</span>] integerValue];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;动态添加的女朋友名字是%@,年龄:%ld&quot;</span>,name,age);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 动态创建一个继承自NSObject的类</span></span><br><span class="line">        Class GirlFriend = objc_allocateClassPair([<span class="built_in">NSObject</span> <span class="keyword">class</span>], <span class="string">&quot;GirlFriend&quot;</span>, <span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 给“女朋友&quot;添加成员变量 _name</span></span><br><span class="line">        class_addIvar(GirlFriend, <span class="string">&quot;_name&quot;</span>, <span class="keyword">sizeof</span>(<span class="built_in">NSString</span>*), log2(<span class="keyword">sizeof</span>(<span class="built_in">NSString</span>*)), <span class="keyword">@encode</span>(<span class="built_in">NSString</span>*));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 给“女朋友”添加成员变量 _age</span></span><br><span class="line">        class_addIvar(GirlFriend, <span class="string">&quot;_age&quot;</span>, <span class="keyword">sizeof</span>(<span class="built_in">NSInteger</span>), <span class="keyword">sizeof</span>(<span class="built_in">NSInteger</span>), <span class="keyword">@encode</span>(<span class="built_in">NSInteger</span>));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注册一个名为“cooking”的方法</span></span><br><span class="line">        SEL cook = sel_registerName(<span class="string">&quot;cooking&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 给“女朋友”添加方法</span></span><br><span class="line">        class_addMethod(GirlFriend, cook, (IMP)cooking, <span class="string">&quot;v@:@&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注册“女朋友”类</span></span><br><span class="line">        objc_registerClassPair(GirlFriend);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建类的实例</span></span><br><span class="line">        <span class="keyword">id</span> gfInstance = [[GirlFriend alloc] init];</span><br><span class="line">        <span class="comment">// class_createInstance这个函数也能创建类实例,不过ARC环境下不能使用</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获取类中指定名称的成员变量的信息</span></span><br><span class="line">        Ivar nameIvar = class_getInstanceVariable(GirlFriend, <span class="string">&quot;_name&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 利用runtime函数为这个成员变量赋值</span></span><br><span class="line">        object_setIvar(gfInstance, nameIvar, <span class="string">@&quot;娃娃&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 利用KVC赋值</span></span><br><span class="line">        [gfInstance setValue:@<span class="number">18</span> forKeyPath:<span class="string">@&quot;age&quot;</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 给对象发送消息</span></span><br><span class="line">        objc_msgSend(gfInstance,cook,<span class="string">@&quot;鱼香肉丝&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        gfInstance = <span class="literal">nil</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 销毁类</span></span><br><span class="line">        objc_disposeClassPair(GirlFriend);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate <span class="keyword">class</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上的函数有几个需要解释一下:</p>
+<ul>
+<li>class_addIvar:除了第四个参数,相信其他的参数大家都能知道是什么意思.第四个参数我看了下官方文档的解释<blockquote>
+<p>The instance variable’s minimum alignment in bytes is 1&lt;&lt;align. The minimum alignment of an instance variable depends on the ivar’s type and the machine architecture. For variables of any pointer type, pass log2(sizeof(pointer_type)).</p>
+</blockquote>
+</li>
+</ul>
+<p>成员变量的最小对齐长度是1&lt;&lt;align.这个取决于ivar的类型和机器的架构。任何指针类型的变量,通过log2(sizeof(pointer_type))来进行赋值,而且这个函数只能在objc_allocateClassPair和objc_disposeClassPair之间调用.</p>
+<ul>
+<li>class_addMethod:最后一个参数,要赋值的是函数的类型。一个函数至少有两个参数(self和_cmd),这两个参数是隐式参数。函数的类型= 返回值+参数类型<br>v 表示 void<br>@ 表示 对象<br>: 表示SEL</li>
+<li>objc_disposeClassPair : 如果要销毁的类的实例或者它子类的实例还存在,不能调用这个函数。所以一定要先销毁实例再去销毁类</li>
+</ul>
+<p>###额外补充<br>在上面的代码中,我们动态创建了类和成员变量,给类添加方法..但是还没有尝试过添加属性。因为添加属性比较麻烦,所以我打算单独给大家说明一下添加属性这个函数的具体使用.</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class_addProperty(__<span class="keyword">unsafe_unretained</span> Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount)</span><br></pre></td></tr></table></figure>
+<p>上面的函数用来添加属性,但是第三个参数和第四个参数我们该怎么赋值呢。第三个参数是一个指向objc_property_attribute_t的指针,首先看下它到底是什么</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;           <span class="comment">/**&lt; The name of the attribute */</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *value;          <span class="comment">/**&lt; The value of the attribute (usually empty) */</span></span><br><span class="line">&#125; objc_property_attribute_t;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>知道了这是一个结构体,看下文档说明</p>
+<blockquote>
+<p>attributes:An array of property attributes.<br>attributeCount:The number of attributes in attributes.</p>
+</blockquote>
+<p>attributes 就是一个数组,里面装着property的attributes(属性).<br>attributeCount 可以理解为数组的个数</p>
+<p>知道了attributes是什么了之后,那么问题来了, property 的 attributes是什么呢? 要怎么填?</p>
+<p>runtime有一个函数可以拿到property的attributes(属性).那么我们可以试试打印一下看看那是个什么东西.首先,创建一个”MyClass”文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyClass</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>然后随便找个地打印一下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取MyClass类中的name属性</span></span><br><span class="line">objc_property_t property = class_getProperty([MyClass <span class="keyword">class</span>], <span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// 获取property的属性</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* attribute = property_getAttributes(property);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;%s&quot;</span>,attribute);</span><br></pre></td></tr></table></figure>
+<p>输出结果:T@”NSString”,C,N,V_name<br>看不懂,好吧..我们找官方文档看看这个字符串是什么意思</p>
+<blockquote>
+<p>The string starts with a T followed by the @encode type and a comma, and finishes with a V followed by the name of the backing instance variable. Between these, the attributes are specified by the following descriptors, separated by commas</p>
+</blockquote>
+<p>就是说这个字符串是以T跟着类型编码和逗号开头,以V成员变量的名称结束<br> @ 代表这个property是一个对象 C 代表copy N 代表nonatomic</p>
+<p>看到这里我们有能明白了,attributes要赋值一个<code>objc_property_attribute_t</code>结构体类型的数组,而<code>objc_property_attribute_t</code>结构体要赋值的是property的属性。so 我们动手尝试一下吧</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">objc_property_attribute_t type1 = &#123;<span class="string">&quot;T&quot;</span>,<span class="string">&quot;@\&quot;NSString\&quot;&quot;</span>&#125;;</span><br><span class="line">objc_property_attribute_t policy = &#123;<span class="string">&quot;C&quot;</span>,<span class="string">&quot;&quot;</span>&#125;;</span><br><span class="line">objc_property_attribute_t rmw = &#123;<span class="string">&quot;N&quot;</span>,<span class="string">&quot;&quot;</span>&#125;;</span><br><span class="line">objc_property_attribute_t ivar = &#123;<span class="string">&quot;V&quot;</span>,<span class="string">&quot;_introduction&quot;</span>&#125;;</span><br><span class="line">objc_property_attribute_t att[] = &#123;type1,policy,rmw,ivar&#125;;</span><br><span class="line">class_addProperty(GirlFriend, <span class="string">&quot;introduction&quot;</span>, att, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="了解女朋友"><a href="#了解女朋友" class="headerlink" title="了解女朋友"></a>了解女朋友</h3><p>了解自己的女朋友是必不可少的,那么我们怎么通过代码来了解呢?<br>首先，创建一个GirlFriend文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">GirlFriend</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *_nativeplace;</span><br><span class="line">    <span class="built_in">NSString</span> *_background;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>) <span class="built_in">NSUInteger</span> age;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>) <span class="keyword">double</span> height;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)AllIvars;</span><br><span class="line">- (<span class="keyword">void</span>)AllPropertys;</span><br><span class="line">- (<span class="keyword">void</span>)cooking;</span><br><span class="line">- (<span class="keyword">void</span>)fitness;</span><br><span class="line">- (<span class="keyword">void</span>)AllMethods;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;GirlFriend.h&quot;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">GirlFriend</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有的成员变量</span></span><br><span class="line">- (<span class="keyword">void</span>)AllIvars</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    Ivar *ivars = class_copyIvarList(<span class="keyword">self</span>.class, &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* ivarName = ivar_getName(ivar);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;ivarName--%s&quot;</span>,ivarName);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(ivars);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有的property</span></span><br><span class="line">- (<span class="keyword">void</span>)AllPropertys</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    objc_property_t *propertys = class_copyPropertyList(<span class="keyword">self</span>.class, &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">        objc_property_t property = propertys[i];</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* propertyName = property_getName(property);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;propertyName--%s&quot;</span>,propertyName);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(propertys);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有方法</span></span><br><span class="line">- (<span class="keyword">void</span>)AllMethods</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    Method *methods = class_copyMethodList(<span class="keyword">self</span>.class, &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">        Method method = methods[i];</span><br><span class="line">        SEL methodName = method_getName(method);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;methodName--%@&quot;</span>,<span class="built_in">NSStringFromSelector</span>(methodName));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    free(methods);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">        [gf AllIvars];</span><br><span class="line">        [gf AllPropertys];</span><br><span class="line">        [gf AllMethods];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate <span class="keyword">class</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果:<br><img src="/images/runtime_3.jpeg"></p>
+<p>以上的函数都比较简单.但是很实用,比如快速归档和解档.而且要注意一点,因为runtime是C语言的函数,所以遇到<code>copy</code>创建的对象基本上都要用<code>free()</code>函数来释放.</p>
+<h3 id="关联对象的使用"><a href="#关联对象的使用" class="headerlink" title="关联对象的使用"></a>关联对象的使用</h3><p>我们可以通过关联对象给女朋友添加属性。首先创建一个女朋友的分类Extension</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;GirlFriend.h&quot;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">GirlFriend</span> (<span class="title">Extension</span>)</span></span><br><span class="line"><span class="comment">// 随便写的</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>) <span class="built_in">NSString</span> *personality;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;GirlFriend+Extension.h&quot;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">GirlFriend</span> (<span class="title">Extension</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setPersonality:(<span class="built_in">NSString</span> *)personality</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 第一个参数:要给哪个对象添加关联对象</span></span><br><span class="line">    <span class="comment">// 第二个参数:关联的key,注意: void* 相当于 OC中的id类型,所以这个key不是固定的</span></span><br><span class="line">    <span class="comment">// 第三个参数:关联的value</span></span><br><span class="line">    <span class="comment">// 第四个参数:关联的策略</span></span><br><span class="line">    objc_setAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(personality), personality, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)personality</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 通过key来获取value</span></span><br><span class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(personality));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关联对象是比较简单的,用得场景也很多.可以看下第三方库的源码.关联对象很常用,.不仅仅是添加属性.</p>
+<h3 id="字典转模型"><a href="#字典转模型" class="headerlink" title="字典转模型"></a>字典转模型</h3><p>相信大家都使用过第三方库来实现这个功能,下面我们来了解一下这个功能的具体实现<br>首先新建一个NSObject分类</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">KeyValue</span>)</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)modelWithDictonary:(<span class="built_in">NSDictionary</span> *)dict;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;NSObject+KeyValue.h&quot;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">KeyValue</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">instancetype</span>)modelWithDictonary:(<span class="built_in">NSDictionary</span> *)dict</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">id</span> instance = [[<span class="keyword">self</span> alloc] init];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">    Ivar *ivars = class_copyIvarList(<span class="keyword">self</span>, &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; outCount; i++) &#123;</span><br><span class="line">        Ivar ivar = ivars[i];</span><br><span class="line">        <span class="comment">// 获取成员属性名字</span></span><br><span class="line">        <span class="built_in">NSString</span> *name = [<span class="built_in">NSString</span> stringWithUTF8String:ivar_getName(ivar)];</span><br><span class="line">        <span class="comment">// 去掉下划线</span></span><br><span class="line">        <span class="built_in">NSString</span> *key = [name substringFromIndex:<span class="number">1</span>];</span><br><span class="line">        <span class="comment">// 根据key获取value</span></span><br><span class="line">        <span class="keyword">id</span> value = dict[key];</span><br><span class="line">        <span class="keyword">if</span> (value) &#123; <span class="comment">// 如果value有值</span></span><br><span class="line">            [instance setValue:value forKey:key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>简单实现了具体功能,而且也解决了字典中的<code>key</code>找不到对应的属性也不会Crash</p>
+<h3 id="method-swizzling"><a href="#method-swizzling" class="headerlink" title="method swizzling"></a>method swizzling</h3><p>之前提到了方法调用其实就是发消息给对象,那么当对象接收到了消息之后怎么调用对应的方法呢?</p>
+<p>消息机制原理:对象根据方法编号SEL在”方法映射表”中找到对应的方法实现.因为<code>Objective-C</code>是动态语言,具体要调用哪个方法要到运行时才决定。所以，我们可以在运行时把<code>SEL</code>对应的方法实现改变一下.我们可以在不修改源码和继承子类覆写方法就能修改一个类本身的功能。这种方法叫method swizzling(俗称”黑魔法”)</p>
+<p>回到GirlFriend.h文件,我们给女朋友添加“做家务”的功能</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)housework;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)housework</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;做家务&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)cooking</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;做饭&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需求:让女朋友做饭,她却去做家务</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">void</span>)load</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 拿到“做饭”方法地址(实例方法,如果要拿到类方法使用class_getClassMethod)</span></span><br><span class="line">    Method cooking = class_getInstanceMethod(<span class="keyword">self</span>, <span class="keyword">@selector</span>(cooking));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 拿到&quot;做家务&quot;方法地址</span></span><br><span class="line">    Method housework = class_getInstanceMethod(<span class="keyword">self</span>, <span class="keyword">@selector</span>(housework));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 交换地址方法</span></span><br><span class="line">    method_exchangeImplementations(housework, cooking);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后随便找个地验证一下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">[gf cooking];  <span class="comment">// 输出结果: 做家务</span></span><br></pre></td></tr></table></figure>
+<p>上面的例子只是简单的交换方法。method swizzling也可以交换系统自带的方法.也能在系统原有的功能里,添加更多的功能。或者迭代开发中处理版本兼容问题也能用到</p>
+<h3 id="消息转发机制"><a href="#消息转发机制" class="headerlink" title="消息转发机制"></a>消息转发机制</h3><p>上文说了消息传递机制的原理,那么我们可能还会遇到另一种情况,当发送消息给对象的时候,对象不能解析这条消息(找不到对应的方法)会方法什么情况呢?</p>
+<p>当一个对象收到不能解析的消息之后,就会启动”消息转发”机制。我们可以在这个过程告诉对象应该怎么处理!</p>
+<ul>
+<li> 动态方法解析<br>对象在接收到无法解读的消息后，首先将调用其所属类的下列类方法</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel</span><br></pre></td></tr></table></figure>
+<p>其返回值是BOOL类型,表示这个是否能新增一个实例方法来处理此选择子,返回NO的话进入下一步</p>
+<ul>
+<li> 备援接收者<br>当前接收者还有第二次机会能处理不能解析的消息,在这一步中，运行期就会问它，能不能把这条消息转给其他接收者来处理</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector</span><br></pre></td></tr></table></figure>
+<p>如果返回nil的话就进入下一步</p>
+<ul>
+<li>完整的消息转发<br>如果已经到了这个步骤的话,就会启动”完整的转发机制”,需要创建<code>NSInvocation</code>对象来进行处理(下文详解)。这个步骤会调用下面方法来进行转发消息</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</span><br></pre></td></tr></table></figure>
+<p>看张图片加深理解<br><img src="/images/runtime_2.jpeg"></p>
+<p>模拟场景:如果我们找了一个“女朋友”,谈的时候她跟你说她做饭很好吃!!,等你带回家的时候,发现她根本就不会做饭.这不是坑爹吗？那我们应该怎么办呢?<br>首先在GirlFriend.m文件 把<code>cooking</code>方法的实现给注释掉.<br>随便找块地打印</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">[gf cooking];</span><br></pre></td></tr></table></figure>
+<p>报错:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-[GirlFriend cooking]: unrecognized selector sent to instance 0x7fbef2e0b490</span><br><span class="line">Terminating app due to uncaught exception &#39;NSInvalidArgumentException&#39;, reason: &#39;-[GirlFriend cooking]: unrecognized selector sent to instance 0x7fbef2e0b490&#39;</span><br></pre></td></tr></table></figure>
+<p>报错的原因是:你的女朋友根本就不会做饭..</p>
+<h4 id="第一步-让女朋友会做饭"><a href="#第一步-让女朋友会做饭" class="headerlink" title="第一步 让女朋友会做饭"></a>第一步 让女朋友会做饭</h4><p>在GrilFriend.m文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    class_addMethod(<span class="keyword">self</span>, sel, (IMP)cooking, <span class="string">&quot;v@:&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> cooking(<span class="keyword">id</span> <span class="keyword">self</span>,SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;会做饭啦&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随便找块地打印</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">[gf cooking];   <span class="comment">// 输出结果:会做饭啦</span></span><br></pre></td></tr></table></figure>
+<h4 id="第二步-让别人来做饭"><a href="#第二步-让别人来做饭" class="headerlink" title="第二步 让别人来做饭"></a>第二步 让别人来做饭</h4><p>如果你的女朋友死活不肯去做饭呢?那我们请个保姆做呗..<br>首先新建Nurse文件<br>.h文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Nurse</span> : <span class="title">NSObject</span></span></span><br><span class="line">- (<span class="keyword">void</span>)cooking;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>.m文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Nurse</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 保姆必须会做饭</span></span><br><span class="line">- (<span class="keyword">void</span>)cooking</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;保姆去做饭啦&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回到GirlFriend.m文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector</span><br><span class="line">&#123;</span><br><span class="line">    Nurse *n = [[Nurse alloc] init];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了,那我们随便找块地打印验证一下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">[gf cooking];   <span class="comment">// 输出结果:保姆去做饭啦</span></span><br></pre></td></tr></table></figure>
+<h4 id="第三步-完整的消息转发"><a href="#第三步-完整的消息转发" class="headerlink" title="第三步  完整的消息转发"></a>第三步  完整的消息转发</h4><p>来到这一步的话,说明就要创建并且处理<code>NSInvocation</code>对象。这个对象用起来比较麻烦。所以一般都会在前两步来处理(最好在第一步)</p>
+<p>下面我们来使用一下<code>NSInvocation</code>对象<br>GirlFriend.m文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 因为Invocation对象需要一个函数签名来创建,所以,首先会来到这一步</span></span><br><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 创建函数签名</span></span><br><span class="line">    <span class="built_in">NSMethodSignature</span> *sig = [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">&quot;v@:&quot;</span>];</span><br><span class="line">    <span class="keyword">return</span> sig;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// anInvocation:根据返回的函数签名创建的</span></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation</span><br><span class="line">&#123;</span><br><span class="line">    [anInvocation setTarget:<span class="keyword">self</span>];</span><br><span class="line">    </span><br><span class="line">    [anInvocation setSelector:<span class="keyword">@selector</span>(invocation)];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 函数调用</span></span><br><span class="line">    [anInvocation invoke];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)invocation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;通过invocation调用&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>打印一下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GirlFriend *gf = [[GirlFriend alloc] init];</span><br><span class="line">[gf cooking];   <span class="comment">// 输出结果:通过invocation调用</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>额外补充</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果方法要传参数的话,可以用这个方法</span></span><br><span class="line"><span class="comment">// 第一个参数:要传的参数</span></span><br><span class="line"><span class="comment">// 第二个参数:参数的位置(注意:要从第2个开始,0和1被self和_cmd占了)</span></span><br><span class="line">anInvocation setArgument:(<span class="keyword">nonnull</span> <span class="keyword">void</span> *) atIndex:(<span class="built_in">NSInteger</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a target="_blank" rel="noopener" href="http://southpeak.github.io/blog/2014/10/25/objective-c-runtime-yun-xing-shi-zhi-lei-yu-dui-xiang/">运行时之一:类与对象</a><br><a target="_blank" rel="noopener" href="https://www.amazon.cn/Effective-Objective-C-2-0-%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8FiOS%E4%B8%8EOS-X%E4%BB%A3%E7%A0%81%E7%9A%8452%E4%B8%AA%E6%9C%89%E6%95%88%E6%96%B9%E6%B3%95-%E5%8A%A0%E6%B4%9B%E9%9F%A6/dp/B00IDSGY06/ref=sr_1_1?ie=UTF8&qid=1467204609&sr=8-1&keywords=%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8Fios%E4%BB%A3%E7%A0%81%E7%9A%8452%E4%B8%AA%E6%9C%89%E6%95%88%E6%96%B9%E6%B3%95">Effective Objective C 2.0:编写高质量iOS与OS X代码的52个有效方法</a><br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e071206103a4">让你快速上手Runtime</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/" data-id="ckld5k9ts0005wn2b0e228l8q" data-title="runtime快速入门和实战" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          当UICollectionView遇上动画
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/">TCP协议</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">MJRefresh源码浅析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/">Django REST framework的一些奇巧淫技</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/">Python装饰器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/">Python闭包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

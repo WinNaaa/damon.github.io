@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Python装饰器 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="如果对闭包不了解的同学请移步到这里先, 因为装饰器要通过闭包来实现 前言刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解Python装饰器的原理 什么是装饰器?经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python装饰器">
+<meta property="og:url" content="http://example.com/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如果对闭包不了解的同学请移步到这里先, 因为装饰器要通过闭包来实现 前言刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解Python装饰器的原理 什么是装饰器?经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-11-06T13:57:36.000Z">
+<meta property="article:modified_time" content="2020-09-15T01:30:38.362Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Python装饰器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/" class="article-date">
+  <time class="dt-published" datetime="2017-11-06T13:57:36.000Z" itemprop="datePublished">2017-11-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Python装饰器
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>如果对闭包不了解的同学请移步到<a target="_blank" rel="noopener" href="http://zhuyongjia.com/2017/11/06/Python%E9%97%AD%E5%8C%85/">这里</a>先, 因为装饰器要通过闭包来实现</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解<strong>Python</strong>装饰器的原理</p>
+<h3 id="什么是装饰器"><a href="#什么是装饰器" class="headerlink" title="什么是装饰器?"></a>什么是装饰器?</h3><p>经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在面向对象的设计模式中, decorator被称为装饰模式,OOP的装饰模式需要通过继承和组合来实现，而Python除了能支持OOP的decorator外，直接从语法层次支持decorator。</p>
+<p>下面开始介绍装饰器的原理</p>
+<h4 id="业务逻辑"><a href="#业务逻辑" class="headerlink" title="业务逻辑:"></a>业务逻辑:</h4><p>假如你是简书的开发者,刚开发了一个发布文章的功能:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>然后你美滋滋得上传代码了,第二天产品经理拿着刀来找你:你妹啊,随便就能发布文章了?不用登录的?</p>
+<p>这时候只需要写一个验证登录的逻辑就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_login</span>():</span></span><br><span class="line">    print(<span class="string">&quot;做登录验证&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>然后你就开始纠结了,这段代码怎么放呢?这样?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    check_login()</span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这样确实完成了功能,但是不太优雅,耦合度太高,我们是要写出高质量代码的攻城狮!!!咳咳</p>
+<p>所以,我们希望在不改变 <code>send()</code> 代码的前提下,还能做验证登录的操作,装饰器就出现了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_login</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>():</span></span><br><span class="line">        print(<span class="string">&quot;做登录验证&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;开始发布文章&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br><span class="line"></span><br><span class="line">send = check_login(send) <span class="comment">#0</span></span><br><span class="line">send()</span><br></pre></td></tr></table></figure>
+<p>可以看到,注释 0 处的代码返回值已经是inner函数对象了.在执行<code>send()</code>的时候实际上就是在执行<code>inner()</code>,这样就能做到不改变原有函数代码的前提下,提升函数的功能!</p>
+<p>在<strong>Python</strong>中,有一个语法糖可以不用写<code>注释0处</code>的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@check_login </span><span class="comment">#语法糖</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>调用<code>send()</code>结果一样,所以说</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@check_login </span><span class="comment">#语法糖</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">send = check_login(send)</span><br></pre></td></tr></table></figure>
+<p>两种写法是等价的!</p>
+<p>在上面的代码可以看出来,装饰器个函数,它的参数是被装饰的函数,返回值也是一个函数.</p>
+<h3 id="业务逻辑的变动"><a href="#业务逻辑的变动" class="headerlink" title="业务逻辑的变动"></a>业务逻辑的变动</h3><p>有一天你发现,发布文章的代码好像得接收用户编写文章的内容和标题才能发布出现显示给用户看哦(不然就是一堆假数据),然后你赶紧改了一下发布文章的逻辑代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>(<span class="params">title,content</span>):</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;文章标题: %s, 内容:%s&quot;</span> % (title,content))</span><br></pre></td></tr></table></figure>
+<p>运行就报错了,因为加上装饰器之后调用<code>send(&quot;title&quot;,&quot;content&quot;)</code>是相当于调用了<code>inner()</code>,但是装饰器里的inner并没有接收参数,所以,应该修改装饰器中的代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_login</span>(<span class="params">func</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args, **kw</span>):</span></span><br><span class="line">        print(<span class="string">&quot;做登录验证&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;开始发布文章&quot;</span>)</span><br><span class="line">        func(*args,**kw) <span class="comment">#0</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br></pre></td></tr></table></figure>
+<p>因为注释0代码处才是真正调用了发布文章的原函数,所以得把参数传回去,这样就解决问题了,可以传任意数量和任意类型的参数!!</p>
+<h4 id="新的问题"><a href="#新的问题" class="headerlink" title="新的问题"></a>新的问题</h4><p>当你想要拿到发布文章的结果,发布成功或者失败:所以你得改发布文章的逻辑代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@check_login</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>(<span class="params">title,content</span>):</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;文章标题: %s, 内容:%s&quot;</span> % (title,content))</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后接收</span></span><br><span class="line">result = send(<span class="string">&quot;Python&quot;</span>,<span class="string">&quot;Python的装饰器&quot;</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p>输出结果:<br>做登录验证<br>开始发布文章<br>文章标题: Python, 内容:Python的装饰器<br>None</p>
+<p>emmmmm? result怎么回事None呢?如果你能看懂前面内容的话这个小bug对你来说就根本不在话下,修改装饰器的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def check_login(func):</span><br><span class="line">    def inner(*args, **kw):</span><br><span class="line">        print(&quot;做登录验证&quot;)</span><br><span class="line">        print(&quot;开始发布文章&quot;)</span><br><span class="line">        func(*args,**kw)</span><br><span class="line">    return inner</span><br></pre></td></tr></table></figure>
+<p>好了,一步一步到这.一个标准的装饰器终于完成了!!</p>
+<h3 id="装饰器的进阶"><a href="#装饰器的进阶" class="headerlink" title="装饰器的进阶"></a>装饰器的进阶</h3><p>上面我们验证登录的装饰器代码中,验证完之后都会<code>print(&quot;开始发布文章&quot;)</code>来做调试.但是,我们不止发布文章的时候要做验证登录的操作,发图片,评论啊,私信啊,回复等等等…都是需要登录验证的装饰器(装饰器的优势体现出来了).然而,你在做其他操作的时候控制台来了一句<strong>开始发布文章</strong> (黑人问号脸????),这时候你就想,要是调试的语句可以控制就好了</p>
+<h4 id="装饰器工厂"><a href="#装饰器工厂" class="headerlink" title="装饰器工厂"></a>装饰器工厂</h4><p>装饰器是可以接收自定义参数的,然后返回另一个装饰器.这样看来的话外面的装饰器其实就是个装饰器工厂,根据传来不同的参数生成不同的装饰器:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_decorator</span>(<span class="params">console</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_log</span>(<span class="params">func</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inner</span>(<span class="params">*args,**kw</span>):</span></span><br><span class="line">            print(console)</span><br><span class="line">            <span class="keyword">return</span> func(*args,**kw)</span><br><span class="line">        <span class="keyword">return</span> inner</span><br><span class="line">    <span class="keyword">return</span> check_log</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="meta">@get_decorator(<span class="params"><span class="string">&quot;开始发布文章&quot;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>(<span class="params">title,content</span>):</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;文章标题: %s, 内容:%s&quot;</span> % (title,content))</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">result = send(<span class="string">&quot;Python&quot;</span>,<span class="string">&quot;Python的装饰器&quot;</span>)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<p><em>get_decorator就是个装饰器工厂,根据参数返回一个装饰器</em></p>
+<p>上面的等价拆分的话,等价于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">check_login = get_decorator(<span class="string">&quot;开始发布文章&quot;</span>)</span><br><span class="line">inner = check_login(send)</span><br><span class="line">send(title,content) = inner(title,content)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/" data-id="ckld5k9to0001wn2b5pj6gfhk" data-title="Python装饰器" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Django REST framework的一些奇巧淫技
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python闭包</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/">TCP协议</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">MJRefresh源码浅析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/">Django REST framework的一些奇巧淫技</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/">Python装饰器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/">Python闭包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
