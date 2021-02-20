@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介Mach-O 是Mach object的缩写，常见的Mach-O文件类型有目标文件、可执行文件、Dsym文件等。了解Mach-O文件的格式，对于静态分析、动态调试、自动化测试及安全都很有意义。可以使用可视化工具来查看 Mach-O 文件，推荐使用 MachOView 软件 文件结构Mach-O主要由三部分组成，分别是 Header、Load Command、Data。  HeaderMach-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mach-O 文件探索">
+<meta property="og:url" content="http://example.com/2020/03/23/Mach-O%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/index.html">
+<meta property="og:site_name" content="Damon">
+<meta property="og:description" content="简介Mach-O 是Mach object的缩写，常见的Mach-O文件类型有目标文件、可执行文件、Dsym文件等。了解Mach-O文件的格式，对于静态分析、动态调试、自动化测试及安全都很有意义。可以使用可视化工具来查看 Mach-O 文件，推荐使用 MachOView 软件 文件结构Mach-O主要由三部分组成，分别是 Header、Load Command、Data。  HeaderMach-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Mach-O_1.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_7.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_2.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_3.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_4.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_8.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_5.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_6.png">
+<meta property="og:image" content="http://example.com/images/Mach-O_9.png">
+<meta property="article:published_time" content="2020-03-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-20T07:58:31.132Z">
+<meta property="article:author" content="Damon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Mach-O_1.png">
+
+<link rel="canonical" href="http://example.com/2020/03/23/Mach-O%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mach-O 文件探索 | Damon</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Damon</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">宏愿纵未了 奋斗总不太晚</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/03/23/Mach-O%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dage.jpeg">
+      <meta itemprop="name" content="Damon">
+      <meta itemprop="description" content="及时当勉励 岁月不待人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Damon">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mach-O 文件探索
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-23T00:00:00+08:00">2020-03-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Mach-O 是Mach object的缩写，常见的Mach-O文件类型有目标文件、可执行文件、Dsym文件等。了解Mach-O文件的格式，对于静态分析、动态调试、自动化测试及安全都很有意义。可以使用可视化工具来查看 Mach-O 文件，推荐使用 MachOView 软件</p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>Mach-O主要由三部分组成，分别是 Header、Load Command、Data。</p>
+<p><img src="/images/Mach-O_1.png"></p>
+<h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><p>Mach-O 头部（Header）保存了CPU架构、大小端序、文件类型、加载命令数量等一些基本信息。Header的定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">mach_header_64</span> &#123;</span></span><br><span class="line">  <span class="keyword">uint32_t</span> magic;</span><br><span class="line">  <span class="keyword">cpu_type_t</span> cputype;</span><br><span class="line">  <span class="keyword">cpu_subtype_t</span> cpusubtype;</span><br><span class="line">  <span class="keyword">uint32_t</span> filetype;</span><br><span class="line">  <span class="keyword">uint32_t</span> ncmds;</span><br><span class="line">  <span class="keyword">uint32_t</span> flags;</span><br><span class="line">  <span class="keyword">uint32_t</span> reserved;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>magic：魔数，用于标识当前设备是大端还是小端，iOS是小端序。对于64位架构的程序，它被定义为常量 <strong>MH_MAGIC_64</strong>，值为 0xfeedfacf</li>
+<li>cputype: 标识 CPU 的架构，如ARM、ARM64、X86_64等。</li>
+<li>cpusubtype: 标识具体的CPU类型，区别不同版本处理器</li>
+<li> filetype: 表示 Mach-O 的文件类型，如可执行文件、动态库文件、符号文件等</li>
+<li>ncmds: Load Commands（加载命令）的数量</li>
+<li>flags: 标志信息，例如是否启动 ASLR</li>
+<li>reserved: 保留字段</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="Load-Commands"><a href="#Load-Commands" class="headerlink" title="Load Commands"></a>Load Commands</h3><p>Load Commands 紧跟在 Header 之后，描述文件在虚拟内存中的逻辑结构、布局。告诉加载器如何处理二进制数据，有些命令是由内核处理的，有些是由动态库链接器（dyld）处理的。定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">load_command</span> &#123;</span></span><br><span class="line">  <span class="keyword">uint32_t</span> cmd;          </span><br><span class="line">  <span class="keyword">uint32_t</span> cmdsize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>cmd: 表示当前加载命令的类型</li>
+<li>cmdsize: 表示当前加载命令的大小</li>
+</ul>
+<p>根据不同的加载命令类型，内核会使用不同的函数来解析，cmd 包含以下部分：</p>
+<p><img src="/images/Mach-O_7.png"></p>
+<ul>
+<li>LC_SEGMENT_64：段加载命令，定义一个段，加载后被映射到内存中，段中包含节</li>
+<li>LC_DYLD_INFO_ONLY：记录了动态链接的重要信息，动态链接库要根据它来进行地址重定向。</li>
+<li>LC_SYMTAB：文件所使用的符号表</li>
+<li>LC_DYSYMTAB：动态库所使用的符号表</li>
+<li>LC_LOAD_DYLINKER：默认的加载器路径</li>
+<li>LC_UUID：Mach-O文件的唯一标识，dSYM文件都存在这个值</li>
+<li>LC_CODE_SIGNATURE：代码签名信息</li>
+</ul>
+<h3 id="DATA"><a href="#DATA" class="headerlink" title="DATA"></a>DATA</h3><p>表示数据，由结构图可知，Data 是由 Segment 和 Section 组成，示例图包含4个段：</p>
+<ul>
+<li>__PAGEZERO：作为第一个段，它的大小为 4GB。这 4GB 并不是文件的真实大小，但是规定了进程地址空间的前 4GB 被映射为不可执行、不可写和不可读。这就是为什么当读写一个 <code>NULL</code> 指针或更小的值时会得到一个 <code>EXC_BAD_ACCESS</code> 错误。</li>
+<li>__TEXT：包含了被执行的代码。它被以只读和可执行的方式映射。进程被允许执行这些代码，但是不能修改。在这个段中，__text 节包含了主程序代码，<strong>__stubs</strong> 和 <strong>__stub_helper</strong> 是给 dyld 用的，用于帮助动态链接器绑定符号</li>
+<li>__DATA：包含了可读写数据，<em>nl_symbol_ptr</em> 和 <em>__la_symbol_ptr</em>，它们分别是 <em>non-lazy</em> 和 <em>lazy</em> 符号指针。延迟符号指针用于可执行文件中调用未定义的函数，例如不包含在可执行文件中的函数，它们将会延迟加载。而针对非延迟符号指针，当可执行文件被加载同时，也会被加载。</li>
+<li>__LINKEDIT：包含了动态链接库的原始数据。</li>
+</ul>
+<p>Segment 的数据结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">segment_command_64</span> &#123;</span> </span><br><span class="line">	<span class="keyword">uint32_t</span>	cmd;		     <span class="comment">//  表示当前加载命令的类型</span></span><br><span class="line">	<span class="keyword">uint32_t</span>	cmdsize;	   <span class="comment">//  表示当前加载命令的大小</span></span><br><span class="line">	<span class="keyword">char</span>		segname[<span class="number">16</span>];   <span class="comment">// 段名称</span></span><br><span class="line">	<span class="keyword">uint64_t</span>	vmaddr;		   <span class="comment">// 段的虚拟内存地址</span></span><br><span class="line">	<span class="keyword">uint64_t</span>	vmsize;		   <span class="comment">// 段的虚拟内存大小</span></span><br><span class="line">	<span class="keyword">uint64_t</span>	fileoff;     <span class="comment">// 段在文件中的偏移量</span></span><br><span class="line">	<span class="keyword">uint64_t</span>	filesize;	   <span class="comment">// 段在文件中的大小</span></span><br><span class="line">	<span class="keyword">vm_prot_t</span>	maxprot;	   <span class="comment">// 段所在页面的最高内存保护，八进制表示</span></span><br><span class="line">	<span class="keyword">vm_prot_t</span>	initprot;    <span class="comment">// 段所在页面的初始内存保护，八进制表示</span></span><br><span class="line">	<span class="keyword">uint32_t</span>	nsects;		   <span class="comment">// 段中包含节（section）的数量</span></span><br><span class="line">	<span class="keyword">uint32_t</span>	flags;	     <span class="comment">// 标识符</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>一个段可以包含0个 Section（节）或者多个 Section， Section 的数据结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">section_64</span> &#123;</span> </span><br><span class="line">    <span class="keyword">char</span>        sectname[<span class="number">16</span>];    <span class="comment">// 节名字 </span></span><br><span class="line">    <span class="keyword">char</span>        segname[<span class="number">16</span>];    <span class="comment">// 节所在的段名字 </span></span><br><span class="line">    <span class="keyword">uint64_t</span>    addr;           <span class="comment">// 节的内存地址 </span></span><br><span class="line">    <span class="keyword">uint64_t</span>    size;           <span class="comment">// 节的内存的大小</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    offset;         <span class="comment">// 节所在的文件偏移</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    align;          <span class="comment">// 节的字节对齐大小 </span></span><br><span class="line">    <span class="keyword">uint32_t</span>    reloff;         <span class="comment">// 重定位入口的文件偏移 </span></span><br><span class="line">    <span class="keyword">uint32_t</span>    nreloc;         <span class="comment">// 需要重定位的入口数量</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    flags;          <span class="comment">// 节的类型和属性</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    reserved1;      <span class="comment">// 保留字段，如果这个 section 是 __la_symbol_ptr，那么这个值就是 DST 的下标</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    reserved2;      <span class="comment">// 保留字段</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    reserved3;      <span class="comment">// 保留字段 </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>大写代表的是段，小写代表的是节。下面列举一些常见的节</p>
+<p>__TEXT 段：</p>
+<ul>
+<li>__text: 主程序代码</li>
+<li>__stubs: 占位代码</li>
+<li>__stubs_helper：用于帮助动态链接器绑定符号</li>
+<li>__const：const 关键字修饰的变量</li>
+<li>__cstring：C语言字符串</li>
+<li>__objc_classname: OC类名</li>
+<li>__objc_methname：OC方法名</li>
+<li>__objc_methtype：OC方法类型</li>
+</ul>
+<p>__DATA 段：</p>
+<ul>
+<li>__data: 初始化数据</li>
+<li>__common: 未初始化的符号声明</li>
+<li>__bss: 未初始化的全局变量</li>
+<li>__cfstring: Core Foundation 字符串</li>
+<li>__got: 非懒绑定符号指针表</li>
+<li>__la_symbol_ptr:  懒绑定符号指针表</li>
+<li>__objc_classlist: OC类列表</li>
+<li>__objc_catlist: OC 分类列表</li>
+<li>__objc_protolist: OC 协议列表</li>
+<li>__objc_selrefs: OC SEL 列表</li>
+<li>__objc_ivar: OC 类的实例变量</li>
+</ul>
+<h2 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR"></a>ASLR</h2><p>ASLR 是 iOS4.3开始引入的技术，全称是<code> Address space layout randomization</code>，翻译过来就是“地址空间布局随机化”，是一种针对缓冲区溢出的安全保护技术，如果未开启 ASLR，__PAGEZERO 段的起始地址就是固定的0x0，那么黑客就很容易就可以找到函数的地址。ASLR 技术就使得这个起始地址是随机的。</p>
+<p>可以通过 LLDB 指令：<code>image list -o -f</code> 来查看起始地址。</p>
+<h2 id="PIC"><a href="#PIC" class="headerlink" title="PIC"></a>PIC</h2><p>PIC 的全称是 Position Independ code（地址无关代码），是 Mach-O 动态链接使用的技术，如果是第一次使用延迟绑定符号（也就是在 <code>__la_symbol_ptr</code> 区的符号），会先跳转到 <code>stub</code> 区，然后通过 <code>_stub_helper</code>  来调用  <code>dyld_stub_binder</code> 去找到符号真正的地址。</p>
+<p>下面来验证这个过程：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;first print&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;second print&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码对应的 ARM64 汇编代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">MachO&#96;main:</span><br><span class="line">    0x100286170 &lt;+0&gt;:  sub    sp, sp, #0x30             ; &#x3D;0x30 </span><br><span class="line">    0x100286174 &lt;+4&gt;:  stp    x29, x30, [sp, #0x20]</span><br><span class="line">    0x100286178 &lt;+8&gt;:  add    x29, sp, #0x20            ; &#x3D;0x20 </span><br><span class="line">    0x10028617c &lt;+12&gt;: mov    w8, #0x0</span><br><span class="line">    0x100286180 &lt;+16&gt;: stur   wzr, [x29, #-0x4]</span><br><span class="line">    0x100286184 &lt;+20&gt;: stur   w0, [x29, #-0x8]</span><br><span class="line">    0x100286188 &lt;+24&gt;: str    x1, [sp, #0x10]</span><br><span class="line">    0x10028618c &lt;+28&gt;: adrp   x0, 1</span><br><span class="line">    0x100286190 &lt;+32&gt;: add    x0, x0, #0xf75            ; &#x3D;0xf75 </span><br><span class="line">    0x100286194 &lt;+36&gt;: str    w8, [sp, #0xc]</span><br><span class="line">-&gt;  0x100286198 &lt;+40&gt;: bl     0x1002864fc               ; symbol stub for: printf</span><br><span class="line">    0x10028619c &lt;+44&gt;: adrp   x9, 1</span><br><span class="line">    0x1002861a0 &lt;+48&gt;: add    x9, x9, #0xf81            ; &#x3D;0xf81 </span><br><span class="line">    0x1002861a4 &lt;+52&gt;: mov    x0, x9</span><br><span class="line">    0x1002861a8 &lt;+56&gt;: bl     0x1002864fc               ; symbol stub for: printf</span><br><span class="line">    0x1002861ac &lt;+60&gt;: ldr    w8, [sp, #0xc]</span><br><span class="line">    0x1002861b0 &lt;+64&gt;: mov    x0, x8</span><br><span class="line">    0x1002861b4 &lt;+68&gt;: ldp    x29, x30, [sp, #0x20]</span><br><span class="line">    0x1002861b8 &lt;+72&gt;: add    sp, sp, #0x30             ; &#x3D;0x30 </span><br><span class="line">    0x1002861bc &lt;+76&gt;: ret    </span><br></pre></td></tr></table></figure>
+<p>断点在12行，<code>bl</code> 指令可以理解为函数调用。用 MachOView 打开可执行文件， 选中 <code>stubs</code> </p>
+<p><img src="/images/Mach-O_2.png"></p>
+<p><code>stub</code> 区的地址和汇编的对不上，是因为 MachOView 是没有 ASLR 的，我们可以试下查看开启了 ASLR 的随机初始地址。</p>
+<p><img src="/images/Mach-O_3.png"></p>
+<p>计算得出 280000 + 1000064FC = 0x1002864fc</p>
+<p>可以用 <code>x/8i 0x1002864fc</code>  指令来查看这个它到底做了什么事：</p>
+<p><img src="/images/Mach-O_4.png"></p>
+<p><code>br</code> 也是一个跳转指令，跳到 <code>x16</code> 寄存器的地址， 值是 0x100286574， 这个值就是对应 <code>__la_symbol_ptr</code> 区的值。</p>
+<p><img src="/images/Mach-O_8.png"></p>
+<p>继续跟踪 0x100286574 的实现：</p>
+<p><img src="/images/Mach-O_5.png"></p>
+<p><code>b</code> 也是跳转指令，首先直接跳转到  <code>0x100286508</code> 这个地址，这个其实就是</p>
+<p>会发现最终会跳到 <code>dyld_stub_binder</code> 这个函数，这个函数会找到 <code>printf</code> 的真实地址。</p>
+<p>当我们过掉这个断点，也就是 <code>first print</code> 打印了之后，再试一下 <code>x/8i 0x1002864fc</code></p>
+<p><img src="/images/Mach-O_6.png"></p>
+<p>第二次调用 <code>printf</code> 会直接跳转到它的真实地址，不会再调用 <code>dyld_stub_binder</code>。</p>
+<p>以上分析，可以得出所以的外部函数引用都会在 <code>DATA</code> 段 <code>la_symbol_ptr</code> 节中产生一个占位符，设置这个占位符主要是做 lazy binding，当第一调用时，就会调用 <code>dyld_stub_binder</code> 进入动态链接过程，一旦找到地址后，<code>la_symbol_ptr</code>节的值就会被改成方法的真实地址。</p>
+<h2 id="Symbol"><a href="#Symbol" class="headerlink" title="Symbol"></a>Symbol</h2><h3 id="Symbol-Table"><a href="#Symbol-Table" class="headerlink" title="Symbol Table"></a>Symbol Table</h3><p>首先理解符号是什么，符号是一个数据结构，包含了名称，类型， 地址等信息。符号表就存储了目标文件的符号，还包含了重定位信息，也就是说静态链接器和动态链接器在链接的过程中都会读取符号表，符号表也会提供信息给调试器。 </p>
+<p>符号的数据结构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nlist_64</span> &#123;</span></span><br><span class="line">  </span><br><span class="line">  <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">     <span class="keyword">uint_32_t</span> n_strx; <span class="comment">// 联合体，字符串表索引</span></span><br><span class="line">   &#125; n_un;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">uint8_t</span> n_type; <span class="comment">//  符号类型</span></span><br><span class="line">  <span class="keyword">uint8_t</span> n_sect; <span class="comment">// 整数，指定这个符号可以在哪个 section 找到，如果找不到，则为 NO_SECT。   </span></span><br><span class="line">  <span class="keyword">uint16_t</span> n_desc; <span class="comment">// 提供符号性质的附加信息。       </span></span><br><span class="line">  <span class="keyword">uint64_t</span> n_value; <span class="comment">// 符号值，如果符号是变量或者函数，符号值就是地址。</span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="String-Table"><a href="#String-Table" class="headerlink" title="String Table"></a>String Table</h3><p>符号的 <code>n_strx</code> 字段是存储了符号的名字在 Sting Table 的索引。String Table 的格式很简单，就是一个个字符串。</p>
+<h3 id="Dynamic-Symbol-Table"><a href="#Dynamic-Symbol-Table" class="headerlink" title="Dynamic Symbol Table"></a>Dynamic Symbol Table</h3><p>Dynamic Symbol Table 是动态链接器(dyld)需要的符号表，在对象被加载的时候映射到进程的地址空间，DST 只存储了符号位于Symbol Table 的下标，可以说 DST 是 Symbol Table 的子集。</p>
+<h3 id="寻找符号过程"><a href="#寻找符号过程" class="headerlink" title="寻找符号过程"></a>寻找符号过程</h3><p>前面提过，如果section是 <code>__la_symbol_ptr</code>，那么 <code>reserved1</code> 属性的值就是 DST 的下标，所以寻找符号的过程就是：</p>
+<ol>
+<li>从 <code>__la_symbol_ptr</code> section 读取 <code>reserved1</code>，即 DST 的下标</li>
+<li>因为 Dynamic Symbol Table 存储的是 Symbol 的下标，Symbol 的 <code>n_strx</code> 字段是 String Table 的索引，根据索引可以找到符号名</li>
+</ol>
+<p>在 facebook 开源的 fishhook 的 README中有一张图就是说明这个过程，现在看的话会容易理解</p>
+<p><img src="/images/Mach-O_9.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/" rel="prev" title="TCP协议">
+      <i class="fa fa-chevron-left"></i> TCP协议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/24/fishhook%E5%8E%9F%E7%90%86/" rel="next" title="fishhook源码浅析">
+      fishhook源码浅析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Header"><span class="nav-number">2.1.</span> <span class="nav-text">Header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Load-Commands"><span class="nav-number">2.2.</span> <span class="nav-text">Load Commands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DATA"><span class="nav-number">2.3.</span> <span class="nav-text">DATA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASLR"><span class="nav-number">3.</span> <span class="nav-text">ASLR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PIC"><span class="nav-number">4.</span> <span class="nav-text">PIC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol"><span class="nav-number">5.</span> <span class="nav-text">Symbol</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Symbol-Table"><span class="nav-number">5.1.</span> <span class="nav-text">Symbol Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-Table"><span class="nav-number">5.2.</span> <span class="nav-text">String Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Symbol-Table"><span class="nav-number">5.3.</span> <span class="nav-text">Dynamic Symbol Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E7%AC%A6%E5%8F%B7%E8%BF%87%E7%A8%8B"><span class="nav-number">5.4.</span> <span class="nav-text">寻找符号过程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Damon"
+      src="/images/dage.jpeg">
+  <p class="site-author-name" itemprop="name">Damon</p>
+  <div class="site-description" itemprop="description">及时当勉励 岁月不待人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Damon</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

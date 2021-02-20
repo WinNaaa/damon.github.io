@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/images/tcp_send_window.jpg">
 <meta property="og:image" content="http://example.com/images/tcp_send_window_slide.png">
 <meta property="article:published_time" content="2019-06-25T03:01:51.000Z">
-<meta property="article:modified_time" content="2021-02-20T07:06:29.716Z">
+<meta property="article:modified_time" content="2021-02-20T08:05:57.897Z">
 <meta property="article:author" content="Damon">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/tcp_head.png">
@@ -277,9 +277,7 @@
 <li>B 收到了 A 的 第1<del>100 和 201</del>300的数据，中间101<del>200的报文丢失了，此时 B 会向 A 发送一个报文 ACK=101, rwnd=200（允许 A 发送 101</del>300序号的数据）</li>
 <li>A 超时重传 </li>
 </ol>
-<h3 id="TCP滑动窗口基本原理"><a href="#TCP滑动窗口基本原理" class="headerlink" title="TCP滑动窗口基本原理"></a>TCP滑动窗口基本原理</h3><blockquote>
-<p>TCP 发送端的 Window 分为四个部分</p>
-</blockquote>
+<h3 id="TCP滑动窗口基本原理"><a href="#TCP滑动窗口基本原理" class="headerlink" title="TCP滑动窗口基本原理"></a>TCP滑动窗口基本原理</h3><p>TCP 发送端的 Window 分为四个部分：</p>
 <ol>
 <li><p>Sent and Acknowledged：发送成功并且收到ACK的数据</p>
 </li>
@@ -294,9 +292,7 @@
 <p>可以看到窗口大小时20字节（这个值在三次握手的时候进行传输的），对于发送方来说，滑动窗口是黑框的部分（已发送和可用窗口），当发送方收到 ACK = 36 时的窗口滑动</p>
 <p><img src="/images/tcp_send_window_slide.png"></p>
 <p>如果这时发送方继续发了5个字节，那么可用窗口就耗尽了，在接收到ACK之前无法继续发送数据。</p>
-<blockquote>
-<p>TCP 接收端的 Window 分为三个部分</p>
-</blockquote>
+<p>TCP 接收端的 Window 分为三个部分：</p>
 <ol>
 <li>接收并且确认过数据</li>
 <li>未收到数据但是可以接收</li>
@@ -408,7 +404,7 @@
 <li>再收到重复的ACK时，cwnd加1</li>
 <li>收到新的数据包的ACK时，cwnd = ssthresh  ，说明从重复ACK时的数据都已经收到，恢复过程结束， 再次进入拥塞避免状态。</li>
 </ol>
-<h2 id="“粘包”问题"><a href="#“粘包”问题" class="headerlink" title="“粘包”问题"></a>“粘包”问题</h2><p>有些人说是因为 <code>Nagle</code> 算法才会出现“粘包”问题是不太准确的，“粘包” 也不是 TCP 的问题</p>
+<h2 id="“粘包”问题"><a href="#“粘包”问题" class="headerlink" title="“粘包”问题"></a>“粘包”问题</h2><p>有些人说是因为 <code>Nagle</code> 算法才会出现“粘包”问题是不太准确的，“粘包” 并不是 TCP 的问题！</p>
 <p>因为TCP是基于字节流而不是数据包的协议，TCP只会把你的数据转成字节流发送出去，保证顺序问题问题，至于怎么才算是一个完整的数据是<strong>应用层</strong>协议设计的。</p>
 <p>既然 TCP 协议是基于字节流的，所以要怎么拆分和组合数据其实是应用层协议要自己设计的。</p>
 <p>最常用的两个解决方案是基于消息长度和基于终结符</p>
@@ -433,7 +429,10 @@
     <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" rel="prev" title="MJRefresh源码浅析">
       <i class="fa fa-chevron-left"></i> MJRefresh源码浅析
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/23/Mach-O%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/" rel="next" title="Mach-O 文件探索">
+      Mach-O 文件探索 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -508,7 +507,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
