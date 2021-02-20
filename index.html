@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/index.html">
@@ -13,87 +27,170 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Hexo</title>
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+          <div class="content index posts-expand">
+            
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/">
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-TCP协议" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/" class="article-date">
-  <time class="dt-published" datetime="2019-06-25T03:01:51.000Z" itemprop="datePublished">2019-06-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/">TCP协议</a>
-    </h1>
-  
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
 
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">TCP协议</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-06-25 11:01:51" itemprop="dateCreated datePublished" datetime="2019-06-25T11:01:51+08:00">2019-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 10:14:48" itemprop="dateModified" datetime="2020-09-15T10:14:48+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>TCP是一个<strong>面向连接</strong>，<strong>可靠的</strong>，<strong>基于字节流</strong>的<strong>传输层</strong>通信协议，负责建立、维护、管理端到端连接。</p>
+          <p>TCP是一个<strong>面向连接</strong>，<strong>可靠的</strong>，<strong>基于字节流</strong>的<strong>传输层</strong>通信协议，负责建立、维护、管理端到端连接。</p>
 <h2 id="TCP-头的协议格式"><a href="#TCP-头的协议格式" class="headerlink" title="TCP 头的协议格式"></a>TCP 头的协议格式</h2><p><img src="/images/tcp_head.png"></p>
 <ol>
 <li>Source Port / Destination Port：源端口和目标端口，分别用16位来存储。tcp头没有ip地址，这是网络层做的事情。</li>
@@ -317,42 +414,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/" data-id="ckld5k9ts0004wn2be9w6ehgr" data-title="TCP协议" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-MJRefresh源码浅析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2019-06-18T13:14:09.000Z" itemprop="datePublished">2019-06-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">MJRefresh源码浅析</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="post-title-link" itemprop="url">MJRefresh源码浅析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-06-18 21:14:09" itemprop="dateCreated datePublished" datetime="2019-06-18T21:14:09+08:00">2019-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:59:35" itemprop="dateModified" datetime="2020-09-15T09:59:35+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJRefresh">MJRefresh</a> 是一个功能强大的 iOS 上拉下拉刷新组件。有很多大厂App（抖音、快手、京东、喜马拉雅等）都在使用，所以是一个很值得学习的库。</p>
+          <p><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJRefresh">MJRefresh</a> 是一个功能强大的 iOS 上拉下拉刷新组件。有很多大厂App（抖音、快手、京东、喜马拉雅等）都在使用，所以是一个很值得学习的库。</p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>先简单说明上拉下拉刷新的原理再去详细分析 <code>MJRefresh</code> 框架结构以及具体实现。</p>
 <h3 id="header-footer的位置"><a href="#header-footer的位置" class="headerlink" title="header/footer的位置"></a>header/footer的位置</h3><p>首先 header/footer 是添加到 <code>UIScrollView</code> 上的，是它的子控件，比如 header 的高度是40，那么它的y值就是 <code>-40 </code> ，footer的y值就是 <code>contentSizeHeight</code>。</p>
 <h3 id="下拉-上拉悬停"><a href="#下拉-上拉悬停" class="headerlink" title="下拉/上拉悬停"></a>下拉/上拉悬停</h3><p>上拉或者下拉到一定程度，松手后就会进入刷新状态，这时候 header/footer 都在显示在可见范围悬停，这是通过设置 UIScrollView 的 <code>contentInset.top</code> 和 <code>contentInset.bottom</code> 来实现，刷新结束后，再重置回来。</p>
@@ -417,42 +540,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckld5k9tq0003wn2bc2ebcn62" data-title="MJRefresh源码浅析" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-Django-REST-framework的一些奇巧淫技" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/" class="article-date">
-  <time class="dt-published" datetime="2018-03-12T08:22:52.000Z" itemprop="datePublished">2018-03-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/">Django REST framework的一些奇巧淫技</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/" class="post-title-link" itemprop="url">Django REST framework的一些奇巧淫技</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-12 16:22:52" itemprop="dateCreated datePublished" datetime="2018-03-12T16:22:52+08:00">2018-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:42:31" itemprop="dateModified" datetime="2020-09-15T09:42:31+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>开始之前,假设你已经有Django和Django REST framework的一些基础了</p>
+          <p>开始之前,假设你已经有Django和Django REST framework的一些基础了</p>
 <h4 id="mixins-ViewSet和routers配合使用"><a href="#mixins-ViewSet和routers配合使用" class="headerlink" title="mixins,ViewSet和routers配合使用"></a>mixins,ViewSet和routers配合使用</h4><p><code>minxis</code>的类有5种</p>
 <ul>
 <li>CreateModelMixin</li>
@@ -557,42 +706,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/" data-id="ckld5k9tl0000wn2b1llte1rg" data-title="Django REST framework的一些奇巧淫技" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-Python装饰器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/" class="article-date">
-  <time class="dt-published" datetime="2017-11-06T13:57:36.000Z" itemprop="datePublished">2017-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/">Python装饰器</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/" class="post-title-link" itemprop="url">Python装饰器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-06 21:57:36" itemprop="dateCreated datePublished" datetime="2017-11-06T21:57:36+08:00">2017-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:30:38" itemprop="dateModified" datetime="2020-09-15T09:30:38+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>如果对闭包不了解的同学请移步到<a target="_blank" rel="noopener" href="http://zhuyongjia.com/2017/11/06/Python%E9%97%AD%E5%8C%85/">这里</a>先, 因为装饰器要通过闭包来实现</p>
+          <p>如果对闭包不了解的同学请移步到<a target="_blank" rel="noopener" href="http://zhuyongjia.com/2017/11/06/Python%E9%97%AD%E5%8C%85/">这里</a>先, 因为装饰器要通过闭包来实现</p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解<strong>Python</strong>装饰器的原理</p>
 <h3 id="什么是装饰器"><a href="#什么是装饰器" class="headerlink" title="什么是装饰器?"></a>什么是装饰器?</h3><p>经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在面向对象的设计模式中, decorator被称为装饰模式,OOP的装饰模式需要通过继承和组合来实现，而Python除了能支持OOP的decorator外，直接从语法层次支持decorator。</p>
 <p>下面开始介绍装饰器的原理</p>
@@ -634,42 +809,68 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">check_login = get_decorator(<span class="string">&quot;开始发布文章&quot;</span>)</span><br><span class="line">inner = check_login(send)</span><br><span class="line">send(title,content) = inner(title,content)</span><br></pre></td></tr></table></figure>
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/" data-id="ckld5k9to0001wn2b5pj6gfhk" data-title="Python装饰器" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-Python闭包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/" class="article-date">
-  <time class="dt-published" datetime="2017-11-06T12:03:29.000Z" itemprop="datePublished">2017-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/06/Python%E9%97%AD%E5%8C%85/">Python闭包</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/11/06/Python%E9%97%AD%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/" class="post-title-link" itemprop="url">Python闭包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-06 20:03:29" itemprop="dateCreated datePublished" datetime="2017-11-06T20:03:29+08:00">2017-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:32:15" itemprop="dateModified" datetime="2020-09-15T09:32:15+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h3 id="Python基础"><a href="#Python基础" class="headerlink" title="Python基础"></a>Python基础</h3><p>在<code>Python</code>中,函数也是一个对象，而且函数对象可以被赋值给变量，所以，通过变量也能调用该函数。<br>例如:</p>
+          <h3 id="Python基础"><a href="#Python基础" class="headerlink" title="Python基础"></a>Python基础</h3><p>在<code>Python</code>中,函数也是一个对象，而且函数对象可以被赋值给变量，所以，通过变量也能调用该函数。<br>例如:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;2017-11-06&#x27;</span>)</span><br><span class="line"></span><br><span class="line">f = now</span><br><span class="line">f()    <span class="comment"># 打印 2017-11-06</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="理解什么是闭包"><a href="#理解什么是闭包" class="headerlink" title="理解什么是闭包?"></a>理解什么是闭包?</h3><p>在 <code>Python</code> 中,闭包的概念是:<br>1.首先是个嵌套函数<br>2.内层函数使用了外层函数的变量或者参数<br>3.外层函数把内层函数当做返回值进行返回</p>
@@ -695,42 +896,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/11/06/Python%E9%97%AD%E5%8C%85/" data-id="ckld5k9tq0002wn2b0h9gbiar" data-title="Python闭包" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-AFNetworking源码浅析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/06/22/AFNetworking%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2017-06-22T15:36:52.000Z" itemprop="datePublished">2017-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/06/22/AFNetworking%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">AFNetworking源码浅析</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/22/AFNetworking%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/22/AFNetworking%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="post-title-link" itemprop="url">AFNetworking源码浅析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-22 23:36:52" itemprop="dateCreated datePublished" datetime="2017-06-22T23:36:52+08:00">2017-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:36:56" itemprop="dateModified" datetime="2020-09-15T09:36:56+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>在阅读之前，希望先了解 <code>NSURLSession</code> 的使用和 HTTP/HTTPS 的基础知识。</p>
+          <p>在阅读之前，希望先了解 <code>NSURLSession</code> 的使用和 HTTP/HTTPS 的基础知识。</p>
 <p>AFNetworking 的结构：</p>
 <ul>
 <li>Manager（网络通信，处理网络请求）<ul>
@@ -858,42 +1085,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/06/22/AFNetworking%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckld5k9tt0007wn2b1amb5rj7" data-title="AFNetworking源码浅析" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-当UICollectionView遇上动画" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/" class="article-date">
-  <time class="dt-published" datetime="2016-07-10T14:45:36.000Z" itemprop="datePublished">2016-07-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/">当UICollectionView遇上动画</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/" class="post-title-link" itemprop="url">当UICollectionView遇上动画</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-10 22:45:36" itemprop="dateCreated datePublished" datetime="2016-07-10T22:45:36+08:00">2016-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:01:54" itemprop="dateModified" datetime="2020-09-15T09:01:54+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h3 id="UICollectionView的简单介绍"><a href="#UICollectionView的简单介绍" class="headerlink" title="UICollectionView的简单介绍"></a>UICollectionView的简单介绍</h3><p>  在iOS6发布前,开发人员都习惯用<code>UITableView</code>来展示所有类型的数据集合。虽然苹果公司在照片应用中使用过很长一段时间类似<code>UICollectionView</code>视图的UI,但第三方开发人员无法使用它。当时我们可以利用第三方框架(如three20)来做类似的功能。在iOS6苹果引入了一个新的控制器<code>UICollectionViewController</code>。提供了一个更加优雅的方法,把各种类型的数据显示在视图中。<br>  现在, 在各种类型的APP中,<code>UICollectionView</code>的身影随处可见,不管在什么应用,总有<code>UICollectionView</code>的应用场景,而苹果也在iOS10中对<code>UICollectionView</code>做了更好的优化。本文主要是展示<code>UICollectionView</code>的常用动画和装逼动画,也会在本文对所有的动画进行详细的讲解。先看效果</p>
+          <h3 id="UICollectionView的简单介绍"><a href="#UICollectionView的简单介绍" class="headerlink" title="UICollectionView的简单介绍"></a>UICollectionView的简单介绍</h3><p>  在iOS6发布前,开发人员都习惯用<code>UITableView</code>来展示所有类型的数据集合。虽然苹果公司在照片应用中使用过很长一段时间类似<code>UICollectionView</code>视图的UI,但第三方开发人员无法使用它。当时我们可以利用第三方框架(如three20)来做类似的功能。在iOS6苹果引入了一个新的控制器<code>UICollectionViewController</code>。提供了一个更加优雅的方法,把各种类型的数据显示在视图中。<br>  现在, 在各种类型的APP中,<code>UICollectionView</code>的身影随处可见,不管在什么应用,总有<code>UICollectionView</code>的应用场景,而苹果也在iOS10中对<code>UICollectionView</code>做了更好的优化。本文主要是展示<code>UICollectionView</code>的常用动画和装逼动画,也会在本文对所有的动画进行详细的讲解。先看效果</p>
 <h3 id="效果1"><a href="#效果1" class="headerlink" title="效果1:"></a>效果1:</h3><p><img src="/images/collectionView_1.webp"></p>
 <h3 id="效果2-圆形放大"><a href="#效果2-圆形放大" class="headerlink" title="效果2 : 圆形放大"></a>效果2 : 圆形放大</h3><p><img src="/images/collectionView_2.webp"></p>
 <h3 id="效果3"><a href="#效果3" class="headerlink" title="效果3 :"></a>效果3 :</h3><p><img src="/images/collectionView_3.webp"></p>
@@ -943,42 +1196,68 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/07/10/%E5%BD%93UICollectionView%E9%81%87%E4%B8%8A%E5%8A%A8%E7%94%BB/" data-id="ckld5k9tt0006wn2b1upgbx69" data-title="当UICollectionView遇上动画" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-runtime快速入门和实战" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/" class="article-date">
-  <time class="dt-published" datetime="2016-06-12T12:24:36.000Z" itemprop="datePublished">2016-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/">runtime快速入门和实战</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">runtime快速入门和实战</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-06-12 20:24:36" itemprop="dateCreated datePublished" datetime="2016-06-12T20:24:36+08:00">2016-06-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-15 09:19:56" itemprop="dateModified" datetime="2020-09-15T09:19:56+08:00">2020-09-15</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h3 id="什么是runtime"><a href="#什么是runtime" class="headerlink" title="什么是runtime?"></a>什么是runtime?</h3><p>简单来说,<code>runtime</code>就是一个C语言库,包含了很多底层<code>C</code>语言的API。<code>Objective-C</code>语言是一门动态语言,我们平时变编写的<code>Objective-C</code>代码，在程序运行时,最终都是转成了<code>runtime</code>的<code>C</code>语言代码。所以,只有在程序运行时,才会去确定对象的类型，并调用类与对象相应的方法。</p>
+          <h3 id="什么是runtime"><a href="#什么是runtime" class="headerlink" title="什么是runtime?"></a>什么是runtime?</h3><p>简单来说,<code>runtime</code>就是一个C语言库,包含了很多底层<code>C</code>语言的API。<code>Objective-C</code>语言是一门动态语言,我们平时变编写的<code>Objective-C</code>代码，在程序运行时,最终都是转成了<code>runtime</code>的<code>C</code>语言代码。所以,只有在程序运行时,才会去确定对象的类型，并调用类与对象相应的方法。</p>
 <h3 id="利用runtime能做什么"><a href="#利用runtime能做什么" class="headerlink" title="利用runtime能做什么?"></a>利用runtime能做什么?</h3><p>利用<code>runtime</code>机制让我们可以在程序运行时动态修改类对象、对象中的所有属性、方法，就算是私有方法以及私有属性都是可以动态修改的。<code>KVO</code>的底层实现就是利用<code>runtime</code>来实现的</p>
 <h3 id="类和对象基本数据结构"><a href="#类和对象基本数据结构" class="headerlink" title="类和对象基本数据结构"></a>类和对象基本数据结构</h3><p>首先,我们来认识一下<code>classes</code>和<code>objects</code>的概念。我们都知道，<code>Objects</code>是由<code>Classes</code>生成,但是在<code>Objective-C</code>中,<code>Classes</code>本身也是<code>objects</code>,也能处理消息,这也就是为什么有类方法和实例方法。</p>
 <h4 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h4><p>打开objc.h可以看到Class的定义</p>
@@ -1118,115 +1397,171 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/06/12/runtime%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E5%92%8C%E5%AE%9E%E6%88%98/" data-id="ckld5k9ts0005wn2b0e228l8q" data-title="runtime快速入门和实战" class="article-share-link">Share</a>
-      
-      
-      
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-</article>
-
-
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/muse.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/06/25/TCP%E5%8D%8F%E8%AE%AE/">TCP协议</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/18/MJRefresh%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">MJRefresh源码浅析</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/12/Django-REST-framework%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E5%B7%A7%E6%B7%AB%E6%8A%80/">Django REST framework的一些奇巧淫技</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/06/Python%E8%A3%85%E9%A5%B0%E5%99%A8/">Python装饰器</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/06/Python%E9%97%AD%E5%8C%85/">Python闭包</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>
