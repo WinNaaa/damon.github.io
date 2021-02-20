@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/images/django_1.png">
 <meta property="og:image" content="http://example.com/images/django_2.png">
 <meta property="article:published_time" content="2018-03-12T08:22:52.000Z">
-<meta property="article:modified_time" content="2020-09-15T01:42:31.053Z">
+<meta property="article:modified_time" content="2021-02-20T07:07:54.204Z">
 <meta property="article:author" content="Damon">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/django_1.png">
@@ -102,6 +102,7 @@
       <h1 class="site-title">Damon</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">宏愿纵未了 奋斗总不太晚</p>
   </div>
 
   <div class="site-nav-right">
@@ -158,7 +159,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/dage.jpeg">
       <meta itemprop="name" content="Damon">
-      <meta itemprop="description" content="宏愿纵未了 奋斗总不太晚">
+      <meta itemprop="description" content="及时当勉励 岁月不待人">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -208,7 +209,8 @@
 <li>ReadOnlyModelViewSet</li>
 <li>ModelViewSet</li>
 </ul>
-<p>一般来说我们只需要用<code>GenericViewSet</code>就可以了.它继承了<code>ViewSetMixin</code>和<code>generics.GenericAPIView</code>,后者的功能大家都知道,有了它才能设置<code>queryset</code>和<code>serializer_class</code>属性.重点是<code>ViewSetMixin</code>.</p>
+<a id="more"></a>一般来说我们只需要用```GenericViewSet```就可以了.它继承了```ViewSetMixin```和```generics.GenericAPIView```,后者的功能大家都知道,有了它才能设置```queryset```和```serializer_class```属性.重点是```ViewSetMixin```.
+
 <p><img src="/images/django_1.png" alt="image"><br>它重写了方法<code>as_view</code>,这个能让我们注册url变得更加简单,还有一个方法是<code>initialize_request</code>,这个方法主要是给<code>action</code>属性赋值,这个属性在设置动态<code>serializer</code>和<code>permission</code>的时候有很大的用处!之后会写到</p>
 <p>所以写一个<code>APIView</code>就变得很简单,如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> mixins</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> viewsets</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXXViewSet</span>(<span class="params">mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet</span>):</span></span><br><span class="line"></span><br><span class="line">    queryset = Model.objects.<span class="built_in">all</span>()</span><br><span class="line">    serializer_class = ModelSerializer</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -381,7 +383,7 @@
     <img class="site-author-image" itemprop="image" alt="Damon"
       src="/images/dage.jpeg">
   <p class="site-author-name" itemprop="name">Damon</p>
-  <div class="site-description" itemprop="description">宏愿纵未了 奋斗总不太晚</div>
+  <div class="site-description" itemprop="description">及时当勉励 岁月不待人</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">

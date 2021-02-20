@@ -28,7 +28,7 @@
 <meta property="og:description" content="如果对闭包不了解的同学请移步到这里先, 因为装饰器要通过闭包来实现 前言刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解Python装饰器的原理 什么是装饰器?经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-11-06T13:57:36.000Z">
-<meta property="article:modified_time" content="2020-09-15T01:30:38.362Z">
+<meta property="article:modified_time" content="2021-02-20T07:08:59.957Z">
 <meta property="article:author" content="Damon">
 <meta name="twitter:card" content="summary">
 
@@ -99,6 +99,7 @@
       <h1 class="site-title">Damon</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">宏愿纵未了 奋斗总不太晚</p>
   </div>
 
   <div class="site-nav-right">
@@ -155,7 +156,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/dage.jpeg">
       <meta itemprop="name" content="Damon">
-      <meta itemprop="description" content="宏愿纵未了 奋斗总不太晚">
+      <meta itemprop="description" content="及时当勉励 岁月不待人">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -190,7 +191,7 @@
         <p>如果对闭包不了解的同学请移步到<a target="_blank" rel="noopener" href="http://zhuyongjia.com/2017/11/06/Python%E9%97%AD%E5%8C%85/">这里</a>先, 因为装饰器要通过闭包来实现</p>
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>刚开始学Python的时候,装饰器(decorator)一直是个让人难以理解的东西,所以想通过这篇文章能够带你一步一步来理解<strong>Python</strong>装饰器的原理</p>
 <h3 id="什么是装饰器"><a href="#什么是装饰器" class="headerlink" title="什么是装饰器?"></a>什么是装饰器?</h3><p>经典的设计模式有23种,设计模式其实也就是巨人们常年写代码经验的思想总结,虽然说这是一种思想,但是由于语法的限制没有办法轻易实现(比如说用C语言来实现组合模式).在面向对象的设计模式中, decorator被称为装饰模式,OOP的装饰模式需要通过继承和组合来实现，而Python除了能支持OOP的decorator外，直接从语法层次支持decorator。</p>
-<p>下面开始介绍装饰器的原理</p>
+<p>下面开始介绍装饰器的原理<a id="more"></a></p>
 <h4 id="业务逻辑"><a href="#业务逻辑" class="headerlink" title="业务逻辑:"></a>业务逻辑:</h4><p>假如你是简书的开发者,刚开发了一个发布文章的功能:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send</span>():</span></span><br><span class="line">    <span class="comment"># 核心代码</span></span><br><span class="line">    print(<span class="string">&quot;发布成功&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>然后你美滋滋得上传代码了,第二天产品经理拿着刀来找你:你妹啊,随便就能发布文章了?不用登录的?</p>
@@ -315,7 +316,7 @@
     <img class="site-author-image" itemprop="image" alt="Damon"
       src="/images/dage.jpeg">
   <p class="site-author-name" itemprop="name">Damon</p>
-  <div class="site-description" itemprop="description">宏愿纵未了 奋斗总不太晚</div>
+  <div class="site-description" itemprop="description">及时当勉励 岁月不待人</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
