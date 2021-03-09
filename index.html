@@ -350,7 +350,7 @@
 
       
           <p>TCP是一个<strong>面向连接</strong>，<strong>可靠的</strong>，<strong>基于字节流</strong>的<strong>传输层</strong>通信协议，负责建立、维护、管理端到端连接。</p>
-<h2 id="TCP-头的协议格式"><a href="#TCP-头的协议格式" class="headerlink" title="TCP 头的协议格式"></a>TCP 头的协议格式</h2><p><img src="/images/tcp_head.png"></p>
+<h2 id="TCP-数据格式"><a href="#TCP-数据格式" class="headerlink" title="TCP 数据格式"></a>TCP 数据格式</h2><p><img src="/images/tcp_head.png"></p>
 <ol>
 <li>Source Port / Destination Port：源端口和目标端口，分别用16位来存储。tcp头没有ip地址，这是网络层做的事情。</li>
 <li>Sequence Number：序列号，占16位，<strong>用来解决网络包乱序问题</strong>。假如一个报文段的序号是500,而数据有20个字节，这就表明这个报文段的第一个字节序号是500，最后一个字节的序号是519，下一个报文段的序号要从520开始。如果溢出了就回到0。</li>
